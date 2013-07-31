@@ -99,6 +99,7 @@ public:
         _y = _y<0?height:_y;
     }
 
+
     void Bounce(int width, int height)
     {
         _dx = _x-_radius<=0? -_dx:_dx;
@@ -106,7 +107,6 @@ public:
         _dy = _y-_radius<=0?-_dy:_dy;
         _dy = _y+_radius>=height?-_dy:_dy;
     }
-
 };
 
 // for meteor effect

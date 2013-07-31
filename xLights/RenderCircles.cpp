@@ -41,6 +41,7 @@ void RgbEffects::RenderCircles(int number,int radius, bool bounce, bool collide,
         return; //radial is the easiest case so just get out.
     }
 
+
     if ( 0 == state || radius != balls[ii]._radius || number != numBalls)
     {
         numBalls = number;
@@ -78,6 +79,7 @@ void RgbEffects::RenderCircles(int number,int radius, bool bounce, bool collide,
         hsv = balls[ii].hsvcolor;
         for(int r = balls[ii]._radius; r >= 0; r--)
         {
+
             if(!bounce && !collide)
             {
                 DrawCircle(balls[ii]._x, balls[ii]._y, r, hsv);

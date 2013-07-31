@@ -208,6 +208,7 @@ void RgbEffects::CirclePlot(int xc, int yc, int x, int y, const wxImage::HSVValu
     SetPixel((xc-y)<0?BufferWi+(xc-y):(xc-y),(yc+x)%BufferHt,hsv);
     SetPixel((xc+y)%BufferWi,(yc-x)<0?BufferHt+(yc-x):(yc-x),hsv);
     SetPixel((xc-y)<0?BufferWi+(xc-y):(xc-y),(yc-x)<0?BufferHt+(yc-x):(yc-x),hsv);
+
 }
 void RgbEffects::DrawCircleClipped(int xc, int yc, int r, const wxImage::HSVValue& hsv)
 {
