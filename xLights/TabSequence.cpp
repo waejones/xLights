@@ -760,6 +760,7 @@ void xLightsFrame::UpdateModelsList()
     Choice_Models->Clear();
     ListBoxElementList->Clear();
     PreviewModels.clear();
+    OtherModels.clear();
     for(wxXmlNode* e=ModelsNode->GetChildren(); e!=NULL; e=e->GetNext() )
     {
         if (e->GetName() == "model")
@@ -774,6 +775,12 @@ void xLightsFrame::UpdateModelsList()
                     model->SetFromXml(e);
                     ListBoxElementList->Append(name,model);
                     PreviewModels.push_back(ModelClassPtr(model));
+                }
+                else //keep a list of non-preview models as well -DJ
+                {
+                    model=new ModelClass;
+                    model->SetFromXml(e);
+                    OtherModels.push_back(ModelClassPtr(model));
                 }
             }
         }
@@ -1009,6 +1016,13 @@ bool xLightsFrame::RenderEffectFromMap(int layer, int period, MapStringString& S
     {
         buffer.RenderFaces(FacesPhoneme.Index(SettingsMap[LayerStr+"CHOICE_Faces_Phoneme"]));
     }
+    else if (effect == "CoroFaces")
+    {
+        buffer.RenderCoroFaces(FacesPhoneme.Index(SettingsMap[LayerStr+"CHOICE_Faces_Phoneme"]),
+                           SettingsMap[LayerStr+"TEXTCTRL_X_Y"],
+                           SettingsMap[LayerStr+"TEXTCTRL_Outline_X_Y"],
+                           SettingsMap[LayerStr+"TEXTCTRL_Eyes_X_Y"]);
+    }
     else if (effect == "Fire")
     {
         buffer.RenderFire(wxAtoi(SettingsMap[LayerStr+"SLIDER_Fire_Height"]),
@@ -1232,6 +1246,12 @@ bool xLightsFrame::PlayRgbEffect1(EffectsPanel* panel, int layer, int EffectPeri
     case eff_FACES:
         buffer.RenderFaces(panel->Choice_Faces_Phoneme->GetSelection());
         break;
+ case eff_COROFACES:
+        buffer.RenderCoroFaces(panel->Choice_Faces_Phoneme->GetSelection(),
+                           panel->TextCtrl_X_Y->GetValue(),
+                           panel->TextCtrl_Outline_X_Y->GetValue(),
+                           panel->TextCtrl_Eyes_X_Y->GetValue());
+        break;
 
     case eff_FIRE:
         buffer.RenderFire(panel->Slider_Fire_Height->GetValue(),
@@ -1437,6 +1457,7 @@ void xLightsFrame::UpdateRgbPlaybackStatus(int seconds, long msec, int EffectPer
 {
 
     int s=seconds%60;
+//    sparkle_count=0;
     msec = (EffectPeriod*50)%1000; // change frame into ms and then find the fractional part
     int minutes=seconds / 60;
 
@@ -2610,7 +2631,7 @@ void xLightsFrame::OpenSequence()
     else if (dialog.RadioButtonNewAnim->GetValue())
     {
         UnsavedChanges = true;
-       // duration=dialog.SpinCtrlDuration->GetValue();  // seconds
+        // duration=dialog.SpinCtrlDuration->GetValue();  // seconds
         duration=0;
         wxString s_duration = dialog.SpinCtrlDuration_Float->GetValue(); // <SCM>
         double f_duration;
@@ -2625,7 +2646,7 @@ void xLightsFrame::OpenSequence()
             wxMessageBox("Invalid value for duration. Value must be > 0.001","ERROR");
             return;
         }
-   //     duration*=1000;  // convert to milliseconds
+        //     duration*=1000;  // convert to milliseconds
         duration=f_duration*1000;  // convert to milliseconds <SCM>
     }
 

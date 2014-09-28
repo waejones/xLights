@@ -497,6 +497,7 @@ protected:
     void DrawCurtain(bool LeftEdge, int xlimit, const wxArrayInt &SwagArray);
     void DrawCurtainVertical(bool LeftEdge, int xlimit, const wxArrayInt &SwagArray);
     void mouth(int Phoneme,int BufferHt, int BufferWt);
+    void coroface(int Phoneme, const wxString& x_y, const wxString& Outline_x_y, const wxString& Eyes_x_y);
     void drawline1(int Phoneme,int x1,int x2,int y1, int y2);
     void drawoutline(int Phoneme,int BufferHt,int BufferWi);
 
@@ -504,6 +505,7 @@ protected:
     void drawline3 (int Phoneme, int x1,int x2,int y6,int y7);
 
     int BufferHt,BufferWi;  // size of the buffer
+    int ChaseDirection; // 0 = R-L, 1=L-R
     int DiagLen;  // length of the diagonal
     int NumPixels;
     bool InhibitClear; //allow canvas to be persistent for piano fx -DJ
@@ -545,7 +547,7 @@ protected:
     MetaBall metaballs[10];
 
     size_t GetNodeCount();
-
+    //int face[52][52];
 
 public:
     double GetEffectPeriodPosition(); //made public -DJ

@@ -813,6 +813,29 @@
 						<label>Curtain</label>
 					</object>
 					<object class="choicebookpage">
+						<object class="wxPanel" name="ID_PANEL6" variable="Panel1_Faces" member="yes">
+							<pos>141,8</pos>
+							<object class="wxFlexGridSizer" variable="FlexGridSizer47" member="no">
+								<cols>2</cols>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT15" variable="StaticText14" member="yes">
+										<label>Phoneme</label>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_Faces_Phoneme" variable="Choice_Faces_Phoneme" member="yes" />
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+							</object>
+						</object>
+						<label>Faces</label>
+					</object>
+					<object class="choicebookpage">
 						<object class="wxPanel" name="ID_PANEL12" variable="Panel1_Fire" member="yes">
 							<object class="wxFlexGridSizer" variable="FlexGridSizer38" member="no">
 								<cols>3</cols>
@@ -1102,6 +1125,52 @@
 							</object>
 						</object>
 						<label>Garlands</label>
+					</object>
+					<object class="choicebookpage">
+						<object class="wxPanel" name="ID_PANEL17" variable="Panel1_Glediator" member="yes">
+							<pos>37,9</pos>
+							<object class="wxFlexGridSizer" variable="FlexGridSizer53" member="no">
+								<cols>1</cols>
+								<object class="sizeritem">
+									<object class="wxFlexGridSizer" variable="FlexGridSizer54" member="no">
+										<cols>2</cols>
+										<object class="sizeritem">
+											<object class="wxButton" name="ID_BUTTON3" variable="Button1" member="yes">
+												<label>Glediator *.gled File</label>
+												<handler function="OnButton_Glediator_FilenameClick" entry="EVT_BUTTON" />
+											</object>
+											<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxBitmapButton" name="ID_BITMAPBUTTON10" variable="BitmapButton_Glediator_Filename" member="yes">
+												<bitmap code="padlock16x16_blue_xpm" />
+												<size>20,17</size>
+												<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
+												<handler function="OnBitmapButton_Glediator_FilenameClick" entry="EVT_BUTTON" />
+											</object>
+											<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL_Glediator_Filename" variable="TextCtrl_Glediator_Filename" member="yes">
+										<size>255,21</size>
+										<style>wxTE_READONLY</style>
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+									<border>2</border>
+									<option>1</option>
+								</object>
+							</object>
+						</object>
+						<label>Glediator</label>
 					</object>
 					<object class="choicebookpage">
 						<object class="wxPanel" name="ID_PANEL16" variable="Panel1_Life" member="yes">
@@ -3329,7 +3398,8 @@
 											<object class="sizeritem">
 												<object class="wxBitmapButton" name="ID_BITMAPBUTTON_SingleStrand_Colors" variable="BitmapButton_SingleStrand_Colors" member="yes">
 													<bitmap code="padlock16x16_blue_xpm" />
-													<size>22,21</size>
+													<size>20,20</size>
+													<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
 													<handler function="OnBitmapButton_SingleStrand_ColorsClick" entry="EVT_BUTTON" />
 												</object>
 												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -3359,7 +3429,8 @@
 											<object class="sizeritem">
 												<object class="wxBitmapButton" name="ID_BITMAPBUTTON_Number_Chases" variable="BitmapButton_Number_Chases" member="yes">
 													<bitmap code="padlock16x16_blue_xpm" />
-													<size>22,21</size>
+													<size>20,20</size>
+													<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
 													<handler function="OnBitmapButton_Number_ChasesClick" entry="EVT_BUTTON" />
 												</object>
 												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -3387,7 +3458,8 @@
 												<object class="wxBitmapButton" name="ID_BITMAPBUTTON_SLIDER_Color_Mix1" variable="BitmapButton_Color_Mix1" member="yes">
 													<bitmap code="padlock16x16_blue_xpm" />
 													<default>1</default>
-													<size>22,21</size>
+													<size>20,20</size>
+													<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
 													<style>wxBU_AUTODRAW|wxNO_BORDER</style>
 													<handler function="OnBitmapButton_Color_Mix1Click" entry="EVT_BUTTON" />
 												</object>
@@ -3417,7 +3489,8 @@
 												<object class="wxBitmapButton" name="ID_BITMAPBUTTON_SLIDER_Chase_Spacing1" variable="BitmapButton_Chase_Spacing1" member="yes">
 													<bitmap code="padlock16x16_blue_xpm" />
 													<default>1</default>
-													<size>22,21</size>
+													<size>20,20</size>
+													<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
 													<style>wxBU_AUTODRAW|wxNO_BORDER</style>
 													<handler function="OnBitmapButton_Chase_Spacing1Click" entry="EVT_BUTTON" />
 												</object>
@@ -3445,7 +3518,8 @@
 												<object class="wxBitmapButton" name="ID_BITMAPBUTTON_CHOICE_Chase_Type1" variable="BitmapButton_Chase_Type1" member="yes">
 													<bitmap code="padlock16x16_blue_xpm" />
 													<default>1</default>
-													<size>22,21</size>
+													<size>20,20</size>
+													<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
 													<style>wxBU_AUTODRAW|wxNO_BORDER</style>
 													<handler function="OnBitmapButton_Chase_Type1Click" entry="EVT_BUTTON" />
 												</object>
@@ -3473,7 +3547,8 @@
 												<object class="wxBitmapButton" name="ID_BITMAPBUTTON_CHECKBOX_Chase_3dFade1" variable="BitmapButton_Chase_3dFade1" member="yes">
 													<bitmap code="padlock16x16_blue_xpm" />
 													<default>1</default>
-													<size>22,21</size>
+													<size>20,20</size>
+													<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
 													<style>wxBU_AUTODRAW|wxNO_BORDER</style>
 													<handler function="OnBitmapButton_Chase_3dFade1Click" entry="EVT_BUTTON" />
 												</object>
@@ -3499,7 +3574,8 @@
 												<object class="wxBitmapButton" name="ID_BITMAPBUTTON_Chase_Group_All" variable="BitmapButton_Chase_Group_All" member="yes">
 													<bitmap code="padlock16x16_blue_xpm" />
 													<default>1</default>
-													<size>22,21</size>
+													<size>20,20</size>
+													<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
 													<style>wxBU_AUTODRAW|wxNO_BORDER</style>
 													<handler function="OnBitmapButton_Chase_Group_AllClick" entry="EVT_BUTTON" />
 												</object>
@@ -3514,31 +3590,6 @@
 							</object>
 						</object>
 						<label>SingleStrand</label>
-					</object>
-					<object class="choicebookpage">
-						<object class="wxPanel" name="ID_PANEL6" variable="Panel1_Faces" member="yes">
-							<pos>141,8</pos>
-							<object class="wxFlexGridSizer" variable="FlexGridSizer47" member="no">
-								<cols>3</cols>
-								<object class="sizeritem">
-									<object class="wxStaticText" name="ID_STATICTEXT15" variable="StaticText14" member="yes">
-										<label>Phoneme</label>
-									</object>
-									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
-								<object class="sizeritem">
-									<object class="wxChoice" name="ID_CHOICE_Faces_Phoneme" variable="Choice_Faces_Phoneme" member="yes">
-										<selection>1</selection>
-									</object>
-									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
-							</object>
-						</object>
-						<label>Faces</label>
 					</object>
 					<object class="choicebookpage">
 						<object class="wxPanel" name="ID_PANEL15" variable="Panel1_Wave" member="yes">
@@ -3733,50 +3784,76 @@
 						<label>Wave</label>
 					</object>
 					<object class="choicebookpage">
-						<object class="wxPanel" name="ID_PANEL17" variable="Panel1_Glediator" member="yes">
-							<pos>37,9</pos>
-							<object class="wxFlexGridSizer" variable="FlexGridSizer53" member="no">
-								<cols>1</cols>
+						<object class="wxPanel" name="ID_PANEL28" variable="Panel1_CoroFaces" member="yes">
+							<pos>202,8</pos>
+							<object class="wxFlexGridSizer" variable="FlexGridSizer58" member="no">
+								<cols>2</cols>
 								<object class="sizeritem">
-									<object class="wxFlexGridSizer" variable="FlexGridSizer54" member="no">
-										<cols>2</cols>
-										<object class="sizeritem">
-											<object class="wxButton" name="ID_BUTTON3" variable="Button1" member="yes">
-												<label>Glediator *.gled File</label>
-												<handler function="OnButton_Glediator_FilenameClick" entry="EVT_BUTTON" />
-											</object>
-											<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
-											<border>5</border>
-											<option>1</option>
-										</object>
-										<object class="sizeritem">
-											<object class="wxBitmapButton" name="ID_BITMAPBUTTON10" variable="BitmapButton_Glediator_Filename" member="yes">
-												<bitmap code="padlock16x16_blue_xpm" />
-												<size>20,17</size>
-												<bg>wxSYS_COLOUR_ACTIVECAPTION</bg>
-												<handler function="OnBitmapButton_Glediator_FilenameClick" entry="EVT_BUTTON" />
-											</object>
-											<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
-											<border>5</border>
-											<option>1</option>
-										</object>
+									<object class="wxStaticText" name="ID_STATICTEXT73" variable="StaticText71" member="yes">
+										<label>Phoneme</label>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_CoroFaces_Phoneme" variable="Choice_CoroFaces_Phoneme" member="yes" />
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT74" variable="StaticText72" member="yes">
+										<label>Mouth X:Y</label>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL_X_Y" variable="TextCtrl_X_Y" member="yes">
+										<value>0:0</value>
+										<handler function="OnTextCtrl1Text" entry="EVT_TEXT" />
 									</object>
 									<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxTextCtrl" name="ID_TEXTCTRL_Glediator_Filename" variable="TextCtrl_Glediator_Filename" member="yes">
-										<size>255,21</size>
-										<style>wxTE_READONLY</style>
+									<object class="wxStaticText" name="ID_STATICTEXT75" variable="StaticText73" member="yes">
+										<label>Face Outline X:Y</label>
 									</object>
-									<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
-									<border>2</border>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL_Outline_X_Y" variable="TextCtrl_Outline_X_Y" member="yes">
+										<value>0:0</value>
+									</object>
+									<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT76" variable="StaticText74" member="yes">
+										<label>Eyes X:Y</label>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL_Eyes_X_Y" variable="TextCtrl_Eyes_X_Y" member="yes">
+										<value>0:0</value>
+									</object>
+									<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
 									<option>1</option>
 								</object>
 							</object>
 						</object>
-						<label>Glediator</label>
+						<label>CoroFaces</label>
 					</object>
 				</object>
 				<flag>wxRIGHT|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL</flag>
@@ -4056,7 +4133,7 @@
 										<object class="wxSlider" name="ID_SLIDER_Speed" variable="Slider_Speed" member="yes">
 											<value>10</value>
 											<min>1</min>
-											<max>20</max>
+											<max>30</max>
 											<size>30,100</size>
 											<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 											<handler function="OnSlider_SpeedCmdScroll" entry="EVT_COMMAND_SCROLL" />

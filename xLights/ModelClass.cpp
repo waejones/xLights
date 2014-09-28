@@ -140,6 +140,7 @@ void ModelClass::SetFromXml(wxXmlNode* ModelNode, bool zeroBased)
         }
     }
 
+
     // initialize model based on the DisplayAs value
     wxStringTokenizer tkz(DisplayAs, " ");
     wxString token = tkz.GetNextToken();
@@ -857,6 +858,7 @@ size_t ModelClass::GetCoordCount(size_t nodenum)
     return nodenum < Nodes.size() ? Nodes[nodenum]->Coords.size() : 0;
 }
 
+#if 0 //obsolete
 int ModelClass::FindChannelAt(int x, int y)
 {
     size_t NodeCount=GetNodeCount();
@@ -871,6 +873,77 @@ int ModelClass::FindChannelAt(int x, int y)
     }
     return -1; //not found
 }
+#endif // 0
+
+
+//return (x,y) matrix of channel#s for pgo RenderFaces:
+#if 0 //obsolete
+wxSize ModelClass::GetChannelCoords(std::vector<std::vector<int>>& chxy, bool shrink)
+{
+    size_t h = 0;
+    if (shrink) chxy.clear();
+    size_t NodeCount = GetNodeCount();
+    for (size_t n = 0; n < NodeCount; n++)
+    {
+        size_t CoordCount = GetCoordCount(n);
+        for (size_t c = 0; c < CoordCount; c++)
+        {
+//??            if ((Nodes[n]->Coords[c].screenX == x) && (Nodes[n]->Coords[c].screenY == y)) return Nodes[n].ActChan;
+            if (Nodes[n]->Coords[c].bufX >= chxy.size()) chxy.resize(Nodes[n]->Coords[c].bufX + 1); //enlarge to fit; TODO: pad with -1s?
+            std::vector<int>& row = chxy[Nodes[n]->Coords[c].bufX];
+            if (Nodes[n]->Coords[c].bufY >= row.size()) row.resize(Nodes[n]->Coords[c].bufY + 1); //enlarge to fit; TODO: pad with -1s?
+            if (Nodes[n]->Coords[c].bufY >= h) h = Nodes[n]->Coords[c].bufY + 1;
+//            row[Nodes[n]->Coords[c].bufY] = Nodes[n]->ActChan;
+            //GetNodeNumber(i)
+        }
+    }
+    for (auto it = chxy.begin(); it != chxy.end(); ++it) //force rectangular matrix
+        (*it).resize(h); //TODO: pad with -1s?
+    return wxSize(chxy.size(), h); //tell caller how big the model is
+}
+#else
+//convert # to AA format so it matches Custom Model grid display:
+//this makes it *so* much easier to visually compare with Custom Model grid display
+static wxString AA(int x)
+{
+    wxString retval;
+    --x;
+    if (x >= 26 * 26) { retval += 'A' + x / (26 * 26); x %= 26 * 26; }
+    if (x >= 26) { retval += 'A' + x / 26; x %= 26; }
+    retval += 'A' + x;
+    return retval;
+}
+size_t ModelClass::GetChannelCoords(wxChoice* choices)
+{
+    choices->Clear();
+    choices->Append(wxT("0: (none)"));
+    size_t NodeCount = GetNodeCount();
+    for (size_t n = 0; n < NodeCount; n++)
+    {
+//        debug(10, "model::node[%d/%d]: #coords %d, ach# %d, str %d", n, NodeCount, Nodes[n]->Coords.size(), Nodes[n]->StringNum, Nodes[n]->ActChan);
+        if (Nodes[n]->Coords.empty()) continue;
+        if (GetCoordCount(n) > 1) //show count and first + last coordinates
+            if (DisplayAs == "Custom")
+                choices->Append(wxString::Format(wxT("%d: %d# @%s%d-%s%d"), GetNodeNumber(n), GetCoordCount(n), AA(Nodes[n]->Coords.front().bufX + 1), BufferHt - Nodes[n]->Coords.front().bufY, AA(Nodes[n]->Coords.back().bufX + 1), BufferHt - Nodes[n]->Coords.back().bufY)); //NOTE: only need first (X,Y) for each channel, but show last and count as well; Y is in reverse order
+            else
+                choices->Append(wxString::Format(wxT("%d: %d# @(%d,%d)-(%d,%d"), GetNodeNumber(n), GetCoordCount(n), Nodes[n]->Coords.front().bufX + 1, BufferHt - Nodes[n]->Coords.front().bufY, Nodes[n]->Coords.back().bufX + 1, BufferHt - Nodes[n]->Coords.back().bufY)); //NOTE: only need first (X,Y) for each channel, but show last and count as well; Y is in reverse order
+        else //just show singleton
+            if (DisplayAs == "Custom")
+                choices->Append(wxString::Format(wxT("%d: @%s%d"), GetNodeNumber(n), AA(Nodes[n]->Coords.front().bufX + 1), BufferHt - Nodes[n]->Coords.front().bufY));
+            else
+                choices->Append(wxString::Format(wxT("%d: @(%d,%d)"), GetNodeNumber(n), Nodes[n]->Coords.front().bufX + 1, BufferHt - Nodes[n]->Coords.front().bufY));
+#if 0
+    Choice_RelativeNodes->Append(wxString::Format(wxT("4 @ '%s'(5,6)"), model_name));
+
+                Nodes[idx]->ActChan = stringStartChan[stringnum] + segmentnum * PixelsPerStrand*3 + y*3;
+                Nodes[idx]->Coords[0].bufX=IsLtoR ? x : NumStrands-x-1;
+                Nodes[idx]->Coords[0].bufY= isBotToTop == (segmentnum % 2 == 0) ? y:PixelsPerStrand-y-1;
+                Nodes[idx]->StringNum=stringnum;
+#endif // 0
+    }
+    return choices->GetCount();
+}
+#endif // 0
 
 wxString ModelClass::ChannelLayoutHtml()
 {
@@ -909,7 +982,11 @@ wxString ModelClass::ChannelLayoutHtml()
     html+=wxString::Format("<tr><td>Total nodes:</td><td>%d</td></tr>",NodeCount);
     html+=wxString::Format("<tr><td>Height:</td><td>%d</td></tr>",BufferHt);
     html+="</table><p>Node numbers starting with 1 followed by string number:</p><table border=1>";
-    if (BufferHt == 1)
+
+
+  int Ibufx,Ibufy;
+
+     if (BufferHt == 1)
     {
         // single line or arch
         html+="<tr>";
@@ -927,6 +1004,9 @@ wxString ModelClass::ChannelLayoutHtml()
         // horizontal or vertical matrix or frame
         for(i=0; i<NodeCount; i++)
         {
+
+            Ibufx = Nodes[i]->Coords[0].bufX;
+            Ibufy = Nodes[i]->Coords[0].bufY;
             idx=Nodes[i]->Coords[0].bufY * BufferWi + Nodes[i]->Coords[0].bufX;
             if (idx < chmap.size()) chmap[idx]=GetNodeNumber(i);
         }
