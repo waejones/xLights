@@ -9,7 +9,7 @@
 ; Tell Windows Explorer to reload the environment
 ChangesEnvironment=yes
 AppName=xLights-Nutcracker
-AppVersion=3.4.13
+AppVersion=3.4.15
 DefaultDirName={pf}\xLights
 DefaultGroupName=xLights
 UninstallDisplayIcon={app}\xLights.exe
@@ -33,7 +33,7 @@ Source: "piano/*.*"; DestDir: "{app}/piano"
 Source: "C:\wxWidgets-3.0.0vc\lib\gcc_dll\wxmsw30u_gcc_custom.dll"; DestDir: "{app}"
 Source: "License.txt"; DestDir: "{app}";
 Source: "Readme.txt";  DestDir: "{app}"; Flags: isreadme
-Source: "README.corofaces";  DestDir: "{app}"; Flags: isreadme
+Source: "README.corofaces.txt";  DestDir: "{app}"; Flags: isreadme
 
 
 

@@ -291,7 +291,7 @@ void PixelBufferClass::SetMixThreshold(int value, bool varies)
 void PixelBufferClass::SetLayer(int newlayer, int period, int speed, bool ResetState)
 {
     CurrentLayer=newlayer & 1;  // only 0 or 1 is allowed
-    Effect[CurrentLayer].SetState(period,speed,ResetState);
+    Effect[CurrentLayer].SetState(period,speed,ResetState, name);
 }
 void PixelBufferClass::SetFadeTimes(int layer, float inTime, float outTime)
 {
@@ -448,9 +448,11 @@ void PixelBufferClass::RenderFaces(int Phoneme)
 {
     Effect[CurrentLayer].RenderFaces(Phoneme);
 }
-void PixelBufferClass::RenderCoroFaces(int Phoneme, const wxString& x_y, const wxString& Outline_x_y, const wxString& Eyes_x_y)
+//void PixelBufferClass::RenderCoroFaces(int Phoneme, const wxString& x_y, const wxString& Outline_x_y, const wxString& Eyes_x_y/*, const wxString& parsed_xy*/)
+void PixelBufferClass::RenderCoroFaces(const wxString& Phoneme, const wxString& eyes, bool face_outline)
 {
-    Effect[CurrentLayer].RenderCoroFaces(Phoneme,x_y,Outline_x_y,Eyes_x_y);
+//    Effect[CurrentLayer].RenderCoroFaces(Phoneme,x_y,Outline_x_y,Eyes_x_y/*, parsed_xy*/);
+    Effect[CurrentLayer].RenderCoroFaces(Phoneme, eyes, face_outline);
 }
 
 

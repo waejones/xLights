@@ -69,6 +69,13 @@ const long EffectsPanel::ID_STATICTEXT33 = wxNewId();
 const long EffectsPanel::ID_CHECKBOX_ColorWash_VFade = wxNewId();
 const long EffectsPanel::ID_BITMAPBUTTON_CHECKBOX_ColorWash_VFade = wxNewId();
 const long EffectsPanel::ID_PANEL5 = wxNewId();
+const long EffectsPanel::ID_STATICTEXT73 = wxNewId();
+const long EffectsPanel::ID_CHOICE_CoroFaces_Phoneme = wxNewId();
+const long EffectsPanel::ID_STATICTEXT64 = wxNewId();
+const long EffectsPanel::ID_CHOICE_CoroFaces_Eyes = wxNewId();
+const long EffectsPanel::ID_STATICTEXT66 = wxNewId();
+const long EffectsPanel::ID_CHECKBOX_CoroFaces_Outline = wxNewId();
+const long EffectsPanel::ID_PANEL28 = wxNewId();
 const long EffectsPanel::ID_STATICTEXT6 = wxNewId();
 const long EffectsPanel::ID_CHOICE_Curtain_Edge = wxNewId();
 const long EffectsPanel::ID_BITMAPBUTTON_CHOICE_Curtain_Edge = wxNewId();
@@ -376,15 +383,6 @@ const long EffectsPanel::ID_STATICTEXT59 = wxNewId();
 const long EffectsPanel::ID_CHOICE_Wave_Direction = wxNewId();
 const long EffectsPanel::ID_BITMAPBUTTON8 = wxNewId();
 const long EffectsPanel::ID_PANEL15 = wxNewId();
-const long EffectsPanel::ID_STATICTEXT73 = wxNewId();
-const long EffectsPanel::ID_CHOICE_CoroFaces_Phoneme = wxNewId();
-const long EffectsPanel::ID_STATICTEXT74 = wxNewId();
-const long EffectsPanel::ID_TEXTCTRL_X_Y = wxNewId();
-const long EffectsPanel::ID_STATICTEXT75 = wxNewId();
-const long EffectsPanel::ID_TEXTCTRL_Outline_X_Y = wxNewId();
-const long EffectsPanel::ID_STATICTEXT76 = wxNewId();
-const long EffectsPanel::ID_TEXTCTRL_Eyes_X_Y = wxNewId();
-const long EffectsPanel::ID_PANEL28 = wxNewId();
 const long EffectsPanel::ID_CHOICEBOOK1 = wxNewId();
 const long EffectsPanel::ID_BITMAPBUTTON_CHOICEBOOK1 = wxNewId();
 const long EffectsPanel::ID_BITMAPBUTTON87 = wxNewId();
@@ -695,6 +693,31 @@ EffectsPanel::EffectsPanel(wxWindow *parent, wxWindowID id, const wxPoint &pos, 
     Panel1_ColorWash->SetSizer(FlexGridSizer37);
     FlexGridSizer37->Fit(Panel1_ColorWash);
     FlexGridSizer37->SetSizeHints(Panel1_ColorWash);
+    Panel1_CoroFaces = new wxPanel(Choicebook1, ID_PANEL28, wxPoint(202,8), wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL28"));
+    FlexGridSizer58 = new wxFlexGridSizer(0, 2, 0, 0);
+    StaticText71 = new wxStaticText(Panel1_CoroFaces, ID_STATICTEXT73, _("Mouth"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT73"));
+    FlexGridSizer58->Add(StaticText71, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    Choice_CoroFaces_Phoneme = new wxChoice(Panel1_CoroFaces, ID_CHOICE_CoroFaces_Phoneme, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_SORT, wxDefaultValidator, _T("ID_CHOICE_CoroFaces_Phoneme"));
+    FlexGridSizer58->Add(Choice_CoroFaces_Phoneme, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText62 = new wxStaticText(Panel1_CoroFaces, ID_STATICTEXT64, _("Eyes"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT64"));
+    FlexGridSizer58->Add(StaticText62, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    Choice_CoroFaces_Eyes = new wxChoice(Panel1_CoroFaces, ID_CHOICE_CoroFaces_Eyes, wxDefaultPosition, wxDefaultSize, 0, 0, wxCB_SORT, wxDefaultValidator, _T("ID_CHOICE_CoroFaces_Eyes"));
+    Choice_CoroFaces_Eyes->Append(_("Eyes_open"));
+    Choice_CoroFaces_Eyes->Append(_("Eyes_closed"));
+    Choice_CoroFaces_Eyes->Append(_("Eyes_left"));
+    Choice_CoroFaces_Eyes->Append(_("Eyes_right"));
+    Choice_CoroFaces_Eyes->Append(_("Eyes_up"));
+    Choice_CoroFaces_Eyes->Append(_("Eyes_down"));
+    Choice_CoroFaces_Eyes->Append(_("(off)"));
+    FlexGridSizer58->Add(Choice_CoroFaces_Eyes, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    StaticText64 = new wxStaticText(Panel1_CoroFaces, ID_STATICTEXT66, _("Face"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT66"));
+    FlexGridSizer58->Add(StaticText64, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    CheckBox_CoroFaces_Outline = new wxCheckBox(Panel1_CoroFaces, ID_CHECKBOX_CoroFaces_Outline, _("Show outline"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX_CoroFaces_Outline"));
+    CheckBox_CoroFaces_Outline->SetValue(false);
+    FlexGridSizer58->Add(CheckBox_CoroFaces_Outline, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    Panel1_CoroFaces->SetSizer(FlexGridSizer58);
+    FlexGridSizer58->Fit(Panel1_CoroFaces);
+    FlexGridSizer58->SetSizeHints(Panel1_CoroFaces);
     Panel1_Curtain = new wxPanel(Choicebook1, ID_PANEL1, wxPoint(150,14), wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     FlexGridSizer7 = new wxFlexGridSizer(0, 3, 0, 0);
     FlexGridSizer7->AddGrowableCol(1);
@@ -1653,32 +1676,12 @@ EffectsPanel::EffectsPanel(wxWindow *parent, wxWindowID id, const wxPoint &pos, 
     Panel1_Wave->SetSizer(FlexGridSizer51);
     FlexGridSizer51->Fit(Panel1_Wave);
     FlexGridSizer51->SetSizeHints(Panel1_Wave);
-    Panel1_CoroFaces = new wxPanel(Choicebook1, ID_PANEL28, wxPoint(202,8), wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL28"));
-    FlexGridSizer58 = new wxFlexGridSizer(0, 2, 0, 0);
-    StaticText71 = new wxStaticText(Panel1_CoroFaces, ID_STATICTEXT73, _("Phoneme"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT73"));
-    FlexGridSizer58->Add(StaticText71, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    Choice_CoroFaces_Phoneme = new wxChoice(Panel1_CoroFaces, ID_CHOICE_CoroFaces_Phoneme, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_CoroFaces_Phoneme"));
-    FlexGridSizer58->Add(Choice_CoroFaces_Phoneme, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    StaticText72 = new wxStaticText(Panel1_CoroFaces, ID_STATICTEXT74, _("Mouth X:Y"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT74"));
-    FlexGridSizer58->Add(StaticText72, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrl_X_Y = new wxTextCtrl(Panel1_CoroFaces, ID_TEXTCTRL_X_Y, _("0:0"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL_X_Y"));
-    FlexGridSizer58->Add(TextCtrl_X_Y, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-    StaticText73 = new wxStaticText(Panel1_CoroFaces, ID_STATICTEXT75, _("Face Outline X:Y"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT75"));
-    FlexGridSizer58->Add(StaticText73, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrl_Outline_X_Y = new wxTextCtrl(Panel1_CoroFaces, ID_TEXTCTRL_Outline_X_Y, _("0:0"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL_Outline_X_Y"));
-    FlexGridSizer58->Add(TextCtrl_Outline_X_Y, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-    StaticText74 = new wxStaticText(Panel1_CoroFaces, ID_STATICTEXT76, _("Eyes X:Y"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT76"));
-    FlexGridSizer58->Add(StaticText74, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    TextCtrl_Eyes_X_Y = new wxTextCtrl(Panel1_CoroFaces, ID_TEXTCTRL_Eyes_X_Y, _("0:0"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL_Eyes_X_Y"));
-    FlexGridSizer58->Add(TextCtrl_Eyes_X_Y, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-    Panel1_CoroFaces->SetSizer(FlexGridSizer58);
-    FlexGridSizer58->Fit(Panel1_CoroFaces);
-    FlexGridSizer58->SetSizeHints(Panel1_CoroFaces);
     Choicebook1->AddPage(Panel1_None, _("None"), false);
     Choicebook1->AddPage(Panel1_Bars, _("Bars"), false);
     Choicebook1->AddPage(Panel1_Butterfly, _("Butterfly"), false);
     Choicebook1->AddPage(Panel1_Circles, _("Circles"), false);
     Choicebook1->AddPage(Panel1_ColorWash, _("Color Wash"), false);
+    Choicebook1->AddPage(Panel1_CoroFaces, _("CoroFaces"), false);
     Choicebook1->AddPage(Panel1_Curtain, _("Curtain"), false);
     Choicebook1->AddPage(Panel1_Faces, _("Faces"), false);
     Choicebook1->AddPage(Panel1_Fire, _("Fire"), false);
@@ -1698,7 +1701,6 @@ EffectsPanel::EffectsPanel(wxWindow *parent, wxWindowID id, const wxPoint &pos, 
     Choicebook1->AddPage(Panel1_Twinkle, _("Twinkle"), false);
     Choicebook1->AddPage(Panel1_SingleStrand, _("SingleStrand"), false);
     Choicebook1->AddPage(Panel1_Wave, _("Wave"), false);
-    Choicebook1->AddPage(Panel1_CoroFaces, _("CoroFaces"), false);
     FlexGridSizer1->Add(Choicebook1, 1, wxRIGHT|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL, 5);
     FlexGridSizer8 = new wxFlexGridSizer(0, 1, 0, 0);
     FlexGridSizer6 = new wxFlexGridSizer(0, 4, 0, 0);
@@ -1964,7 +1966,6 @@ EffectsPanel::EffectsPanel(wxWindow *parent, wxWindowID id, const wxPoint &pos, 
     Connect(ID_BITMAPBUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&EffectsPanel::OnBitmapButton_Wave_ThicknessClick);
     Connect(ID_BITMAPBUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&EffectsPanel::OnBitmapButton_Wave_HeightClick);
     Connect(ID_BITMAPBUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&EffectsPanel::OnBitmapButton_Wave_DirectionClick);
-    Connect(ID_TEXTCTRL_X_Y,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&EffectsPanel::OnTextCtrl1Text);
     Connect(ID_CHOICEBOOK1,wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED,(wxObjectEventFunction)&EffectsPanel::OnChoicebook1PageChanged);
     Connect(ID_BITMAPBUTTON_CHOICEBOOK1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&EffectsPanel::OnBitmapButton_LayerEffectClick);
     Connect(ID_CHECKBOX_Palette1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&EffectsPanel::OnCheckBox_PaletteClick);
@@ -2133,6 +2134,15 @@ wxString EffectsPanel::GetAttrPrefix()
     return ",E" + WinName.Right(1) + "_";
 }
 
+//#define WANT_DEBUG_IMPL
+//#define WANT_DEBUG  -99 //unbuffered in case app crashes
+//#include "djdebug.cpp"
+#ifndef debug_function //dummy defs if debug cpp not included above
+ #define debug(level, ...)
+ #define debug_more(level, ...)
+ #define debug_function(level)
+#endif
+
 // this is recursive
 wxString EffectsPanel::GetEffectStringFromWindow(wxWindow *ParentWin)
 {
@@ -2176,6 +2186,31 @@ wxString EffectsPanel::GetEffectStringFromWindow(wxWindow *ParentWin)
                 s+=GetEffectStringFromWindow(ctrl->GetPage(i));
             }
         }
+#if 0 //obsolete
+        else if (ChildName.StartsWith("ID_CHECKLISTBOX")) //for Pgo Coro Face element list
+        {
+            wxCheckListBox* ctrl=(wxCheckListBox*)ChildWin;
+//            wxArrayInt valary;
+//            size_t numchk = ctrl->GetCheckedItems(valary);
+//            debug(10, "chk lbox '%s' has %d ents, %d %d checked", (const char*)ChildName.c_str(), ctrl->GetCount(), numchk, valary.size());
+            wxString valstr;
+//            for (size_t i = 0; i < valary.size(); ++i)
+//            {
+////                valstr += wxString::Format(wxT(", %d=%s"), i, valary[i]); //give index + value (contains useful info; avoids extra lookup)
+//                debug(10, "chk val[%d/%d]", i, valary.size());
+////                valstr += wxString::Format(wxT(", %d"), i);
+//            }
+//            if (valstr.size() > 2) valstr = valstr.substr(2);
+            for (size_t i = 0; i < ctrl->GetCount(); ++i)
+            {
+                debug(10, "item[%d/%d] = '%s', checked? %d", i, ctrl->GetCount(), (const char*)ctrl->GetString(i).c_str(), ctrl->IsChecked(i));
+                if (ctrl->IsChecked(i)) valstr += wxString::Format(wxT("+%s"), ctrl->GetString(i)); //save entire desc (useful for debug), but only leading index will actually be used when read back; this allows the details to change
+            }
+            if (valstr.size() > 1) valstr = valstr.substr(1); //drop first "+"
+            debug(10, "attr name '%s', valstr '%s'", (const char*)AttrName.c_str(), (const char*)valstr.c_str());
+            s += AttrName + valstr;
+        }
+#endif // 0
     }
     return s;
 }

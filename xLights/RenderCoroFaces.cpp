@@ -24,11 +24,19 @@
 #include "RgbEffects.h"
 #include "xLightsMain.h" //xLightsFrame
 #include <wx/tokenzr.h>
+//#include <wx/checklst.h>
+#include <wx/xml/xml.h>
 
 
-#define WANT_DEBUG_IMPL
-#define WANT_DEBUG  99
+//#define WANT_DEBUG_IMPL
+//#define WANT_DEBUG  -99 //unbuffered in case app crashes
 //#include "djdebug.cpp"
+#ifndef debug_function //dummy defs if debug cpp not included above
+ #define debug(level, ...)
+ #define debug_more(level, ...)
+ #define debug_function(level)
+#endif
+
 
 #if 0 //obsolete
 int FindChannelAtXY(int x, int y, const wxString& model)
@@ -66,13 +74,115 @@ int FindChannelAtXY(int x, int y, const wxString& model)
 #endif // 0
 
 
+#if 0
+static wxString prev_model;
+static void get_elements(wxCheckListBox* listbox, const wxString& model)
+{
+    listbox->Clear();
+    for (auto it = xLightsFrame::PreviewModels.begin(); it != xLightsFrame::PreviewModels.end(); ++it)
+    {
+        if ((*it)->name != model) continue;
+        if ((*it)->GetChannelCoords(listbox))
+        {
+            prev_model = model;
+            return;
+        }
+    }
+//also list non-preview models:
+    for (auto it = xLightsFrame::OtherModels.begin(); it != xLightsFrame::OtherModels.end(); ++it)
+    {
+        if ((*it)->name != model) continue;
+        if ((*it)->GetChannelCoords(listbox))
+        {
+            prev_model = model;
+            return;
+        }
+    }
+}
+#endif // 0
+
+//static bool IsParsed(const wxString& settings)
+//{
+//    return settings.Find('@') != wxNOT_FOUND;
+//}
+
+//TODO: move this to a shared location:
+static wxString NoInactive(wxString name)
+{
+    const wxString InactiveIndicator = "?";
+    return name.StartsWith(InactiveIndicator)? name.substr(InactiveIndicator.size()): name;
+}
+
+//static const char* parts[] = {"Outline", "AI", "E", "etc", "FV", "L", "MBP", "O", "rest", "U", "WQ", "Open", "Closed", "Left", "Right", "Up", "Down"};
+
+//cached model info:
+static std::unordered_map<std::string, std::unordered_map<std::string, /*wxPoint*/ std::string>> model_xy;
+//static std::unordered_map<std::string, wxXmlNode*> model_xy; //since (X,Y) info is already in settings file, just re-use it
+
+static bool parse_model(const wxString& want_model)
+{
+    if (model_xy.find((const char*)want_model.c_str()) != model_xy.end()) return true; //already have info
+//    std::unordered_map<std::string, wxPoint>& xy_info = model_xy[model];
+
+#if 1
+    wxFileName pgoFile;
+    wxXmlDocument pgoXml;
+    pgoFile.AssignDir(xLightsFrame::CurrentDir);
+    pgoFile.SetFullName(_(XLIGHTS_PGOFACES_FILE));
+    if (!pgoFile.FileExists()) return false;
+    if (!pgoXml.Load(pgoFile.GetFullPath())) return false;
+    wxXmlNode* root = pgoXml.GetRoot();
+    if (!root || (root->GetName() != "papagayo")) return false;
+    wxXmlNode* CoroFaces = xLightsFrame::FindNode(pgoXml.GetRoot(), wxT("corofaces"), wxT("name"), wxEmptyString);
+    if (!CoroFaces) return false;
+//    wxString buf;
+    for (wxXmlNode* group = CoroFaces->GetChildren(); group != NULL; group = group->GetNext())
+    {
+        wxString grpname = group->GetAttribute(wxT("name"));
+        debug(15, "found %s group '%s'", (const char*)group->GetName().c_str(), (const char*)group->GetAttribute(wxT("name"), wxT("??")).c_str());
+//        if (group->GetName() != "coro") continue;
+//        if (grpname.IsEmpty()) continue;
+//        wxXmlNode* voice = FindNode(group, "voice", wxT("voiceNumber"), wxString::Format(wxT("%d"), i + 1), true);
+        for (wxXmlNode* voice = group->GetChildren(); voice != NULL; voice = voice->GetNext())
+        {
+            wxString voice_name = NoInactive(voice->GetAttribute(wxT("name")));
+            debug(10, "found voice name '%s' vs. '%s'", (const char*)voice_name.c_str(), (const char*)want_model.c_str());
+            if (voice_name != want_model) continue;
+//            model_xy[(const char*)want_model.c_str()] = voice;
+//XmlNode getting trashed later, so save it here
+            std::unordered_map<std::string, std::string>& map = model_xy[(const char*)want_model.c_str()];
+            map.clear();
+            debug(10, "using xml info '%s'", (const char*)voice->GetContent().c_str());
+            for (wxXmlAttribute* attrp = voice->GetAttributes(); attrp; attrp = attrp->GetNext())
+            {
+                wxString value = attrp->GetValue();
+                if (!value.empty()) map[(const char*)attrp->GetName().c_str()] = (const char*)value.c_str();
+                debug(10, "has attr '%s' = '%s'", (const char*)attrp->GetName().c_str(), (const char*)attrp->GetValue().c_str());
+            }
+            return true;
+        }
+    }
+#endif
+    debug(10, "model '%s' not found", (const char*)want_model.c_str());
+    return false; //not found
+}
+
 //NOTE: params are re-purposed as follows for Coro face mode:
 // x_y = list of active elements for this frame
 // Outline_x_y = list of persistent/sticky elements (stays on after frame ends)
 // Eyes_x_y = list of random elements (intended for eye blinks, etc)
-void RgbEffects::RenderCoroFaces(int Phoneme, const wxString& x_y, const wxString& Outline_x_y, const wxString& Eyes_x_y)
+//void RgbEffects::RenderCoroFaces(int Phoneme, const wxString& x_y, const wxString& Outline_x_y, const wxString& Eyes_x_y/*, const wxString& parsed_xy*/)
+void RgbEffects::RenderCoroFaces(const wxString& Phoneme, const wxString& eyes, bool face_outline)
 {
-
+//    const wxString& parsed_xy = IsParsed(x_y)? x_y: wxEmptyString;
+//NOTE:
+//PixelBufferClass contains 2 RgbEffects members, which this method is a member of
+//xLightsFrame contains a PixelBufferClass member named buffer, which is derived from ModelClass and gives the name of the model currently being used
+//therefore we can access the model info by going to parent object's buffer member
+//    wxString model_name = "???";
+    if (!state) model_xy.clear(); //flush cache at start
+    debug(10, "RenderCoroFaces: state %d, model '%s', mouth/phoneme '%s', eyes '%s', face outline? %d", state, (const char*)cur_model.c_str(), (const char*)Phoneme.c_str(), (const char*)eyes.c_str(), face_outline);
+//    if (prev_model != cur_model) get_elements(CheckListBox_CoroFaceElements, curmodel); //update choice list
 
     /*
         FacesPhoneme.Add("AI");     0
@@ -93,21 +203,80 @@ void RgbEffects::RenderCoroFaces(int Phoneme, const wxString& x_y, const wxStrin
     double offset=double(state)/100.0;
     size_t colorcnt=GetColorCount();
 
-
 //    std::vector<int> chmap;
-    std::vector<std::vector<int>> chmap; //array of arrays
+//    std::vector<std::vector<int>> chmap; //array of arrays
 //    chmap.resize(BufferHt * BufferWi,0);
 //    ModelClass mc;
 //    mc.GetChannelCoords(chmap, true); //method is on ModelClass object
 
 
+//    if (IsParsed(x_y)) //already have (X,Y) info
+//    {
+//TODO: how is color palette supposed to work with Coro faces?
+//        wxImage::HSVValue hsv;
+//        size_t colorcnt=GetColorCount();
+//        int ColorIdx=0;
+//        palette.GetHSV(ColorIdx, hsv);
+        hsv.hue=0.0;
+        hsv.value=1.0;
+        hsv.saturation=1.0;
 
-    wxString html = "<html><body><table border=0>";
-    int Ht, Wt;
-    Ht = BufferHt;
-    Wt = BufferWi;
+        wxPoint first_xy;
+        ModelClass* model_info = ModelClass::FindModel(cur_model);
+        if (!model_info || !parse_model(cur_model))
+        {
+            debug(10, "model '%s' not found", (const char*)cur_model.c_str());
+            return;
+        }
+//        wxXmlNode* xy_info = model_xy[(const char*)cur_model.c_str()];
+        std::unordered_map<std::string, std::string>& map = model_xy[(const char*)cur_model.c_str()];
+        if (!Phoneme.empty())
+        {
+            wxString info = map[(const char*)Phoneme.c_str()];
+//            if (xy_info) info = xy_info->GetAttribute(Phoneme);
+            bool ok = ModelClass::ParseFaceElement(info, &first_xy);
+            if (ok) SetPixel(first_xy.x, BufferHt - first_xy.y, hsv); //only need to turn on first pixel for each face part
+            debug(10, "model '%s', phoneme '%s', parsed info '%s', turn on (x %d, y %d)? %d", (const char*)cur_model.c_str(), (const char*)Phoneme.c_str(), (const char*)info.c_str(), first_xy.x, first_xy.y, ok);
+        }
+        if (!eyes.empty())
+        {
+            wxString info = map[(const char*)eyes.c_str()];
+//            if (xy_info) info = xy_info->GetAttribute(eyes);
+            bool ok = ModelClass::ParseFaceElement(info, &first_xy);
+            if (ok) SetPixel(first_xy.x, BufferHt - first_xy.y, hsv); //only need to turn on first pixel for each face part
+            debug(10, "model '%s', eyes '%s', parsed info '%s', turn on (x %d, y %d)? %d", (const char*)cur_model.c_str(), (const char*)eyes.c_str(), (const char*)info.c_str(), first_xy.x, first_xy.y, ok);
+        }
+        if (face_outline)
+        {
+            wxString info = map["Outline"];
+//            if (xy_info) info = xy_info->GetAttribute("Outline");
+            bool ok = ModelClass::ParseFaceElement(info, &first_xy);
+            if (ok) SetPixel(first_xy.x, BufferHt - first_xy.y, hsv); //only need to turn on first pixel for each face part
+            debug(10, "model '%s', outline, parsed info '%s', turn on (x %d, y %d)? %d", (const char*)cur_model.c_str(), (const char*)info.c_str(), first_xy.x, first_xy.y, ok);
+        }
 
-        coroface( Phoneme, x_y, Outline_x_y, Eyes_x_y); // draw a mouth syllable
+#if 0 //obsolete
+        wxStringTokenizer wtkz(x_y, "+");
+        while (wtkz.HasMoreTokens())
+        {
+            wxString nextstr = wtkz.GetNextToken();
+            wxPoint first_xy;
+            bool ok = ModelClass::ParseFaceElement(nextstr, &first_xy);
+            first_xy.y = BufferHt - first_xy.y; //y is reversed?
+            debug(10, "coro faces: turn on '%s'? %d, xy (%d, %x)", (const char*)nextstr.c_str(), ok, first_xy.x, first_xy.y);
+            if (!ok) continue;
+            SetPixel(first_xy.x, first_xy.y, hsv); //only need to turn on first pixel for each face part
+        }
+        return;
+    }
+#endif // 0
+
+//    wxString html = "<html><body><table border=0>";
+//    int Ht, Wt;
+//    Ht = BufferHt;
+//    Wt = BufferWi;
+
+//        coroface( Phoneme, x_y, Outline_x_y, Eyes_x_y); // draw a mouth syllable
 
 
 
@@ -141,6 +310,7 @@ void RgbEffects::RenderCoroFaces(int Phoneme, const wxString& x_y, const wxStrin
 #endif
 }
 
+#if 0 //obsolete
 void RgbEffects::coroface(int Phoneme, const wxString& x_y, const wxString& Outline_x_y, const wxString& Eyes_x_y)
 {
     /*
@@ -155,7 +325,6 @@ void RgbEffects::coroface(int Phoneme, const wxString& x_y, const wxString& Outl
        FacesPhoneme.Add("etc");    8 : 5
        FacesPhoneme.Add("rest");   9 : 6
     */
-
 
 #if 0
     int face[5][5] =
@@ -276,4 +445,4 @@ void RgbEffects::coroface(int Phoneme, const wxString& x_y, const wxString& Outl
     if(x_Eyes>=0 && x_Eyes<BufferWi && y_Eyes>=0 && y_Eyes<=BufferHt)  SetPixel(x_Eyes,y_Eyes,hsv);
 
 }
-
+#endif //0
