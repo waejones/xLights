@@ -10,7 +10,7 @@
 				<Option platforms="Windows;" />
 				<Option output="../bin/xLights" prefix_auto="1" extension_auto="1" />
 				<Option type="0" />
-				<Option compiler="_microsoft_visual_c_2011" />
+				<Option compiler="msvc10" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="/MDd" />
@@ -106,33 +106,6 @@
 					<Add option="/NODEFAULTLIB:libcmt.lib" />
 					<Add option="/INCREMENTAL:NO" />
 					<Add option="/SUBSYSTEM:WINDOWS" />
-					<Add library="msvcrt.lib" />
-					<Add library="wxmsw30u_core" />
-					<Add library="wxbase30u" />
-					<Add library="wxmsw30u_html" />
-					<Add library="wxbase30u_xml" />
-					<Add library="wxmsw30u_adv" />
-					<Add library="wxmsw30u_media" />
-					<Add library="wxbase30u_net" />
-					<Add library="wxtiff" />
-					<Add library="wxpng" />
-					<Add library="wxjpeg" />
-					<Add library="wxregexu" />
-					<Add library="wxexpat" />
-					<Add library="wxzlib" />
-					<Add library="advapi32.lib" />
-					<Add library="gdi32.lib" />
-					<Add library="user32.lib" />
-					<Add library="ole32.lib" />
-					<Add library="oleaut32.lib" />
-					<Add library="uuid.lib" />
-					<Add library="comctl32.lib" />
-					<Add library="comdlg32.lib" />
-					<Add library="kernel32.lib" />
-					<Add library="rpcrt4.lib" />
-					<Add library="winspool.lib" />
-					<Add library="shell32.lib" />
-					<Add library="wsock32.lib" />
 					<Add library="msvcrt.lib" />
 					<Add library="wxmsw30u_core" />
 					<Add library="wxbase30u" />
