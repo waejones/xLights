@@ -396,8 +396,7 @@ void xLightsFrame::write_pgo_footer(wxFile& f, int MaxVoices)
     size_t numfr = 0;
     wxString frame_desc, shorter_desc;
     wxString errors;
-    wxString frame_phonemes[voices.size()];
-    wxString frame_eyes[voices.size()];
+    wxString frame_phonemes[voices.size()], frame_eyes[voices.size()];
     int all_fade_frame = std::numeric_limits<int>::max(), eyes_move_frame = std::numeric_limits<int>::max(); //, single_fade_frame = std::numeric_limits<int>::max(); //auto-fade frame counts
     std::unordered_map<std::string, int> single_fade_frame; //per-phoneme deadline
     if (eyes_delay) eyes_move_frame = rand() % eyes_delay;
